@@ -1,6 +1,9 @@
 package com.noxus.services;
 
+import com.noxus.data.dto.PersonDTO;
 import com.noxus.exception.ResourceNotFoundException;
+import static com.noxus.mapper.ObjectMapper.parseListObjects;
+import static com.noxus.mapper.ObjectMapper.parseObject;
 import com.noxus.model.Person;
 import com.noxus.repository.PersonRepository;
 import org.slf4j.Logger;
@@ -15,42 +18,43 @@ import java.util.concurrent.atomic.AtomicLong;
 public class PersonService {
 
     private final AtomicLong counter = new AtomicLong();
-
     private Logger logger = LoggerFactory.getLogger(PersonService.class.getName());
 
     @Autowired
     PersonRepository repository;
 
-    public List<Person> findAll() {
-        logger.info("Finding all people");
+    public List<PersonDTO> findAll() {
+        logger.info("Finding all People!");
 
-        return repository.findAll();
+        return parseListObjects(repository.findAll(), PersonDTO.class);
     }
 
-    public Person findById(Long id) {
+    public PersonDTO findById(Long id) {
         logger.info("Finding one Person!");
 
-        return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+        var entity = repository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+        return parseObject(entity, PersonDTO.class);
     }
 
-    public Person create(Person person) {
+    public PersonDTO create(PersonDTO person) {
         logger.info("Creating one Person!");
+        var entity = parseObject(person, Person.class);
 
-        return repository.save(person);
+        return parseObject(repository.save(entity), PersonDTO.class);
     }
 
-    public Person update(Person person) {
+    public PersonDTO update(PersonDTO person) {
         logger.info("Updating one Person!");
-
         Person entity = repository.findById(person.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+
         entity.setFirstName(person.getFirstName());
         entity.setLastName(person.getLastName());
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return repository.save(entity);
+        return parseObject(repository.save(entity), PersonDTO.class);
     }
 
     public void delete(Long id) {
@@ -58,7 +62,6 @@ public class PersonService {
 
         Person entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
-
         repository.delete(entity);
     }
 }

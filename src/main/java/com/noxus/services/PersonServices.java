@@ -2,6 +2,7 @@ package com.noxus.services;
 
 import com.noxus.controllers.PersonController;
 import com.noxus.data.dto.PersonDTO;
+import com.noxus.exception.RequiredObjectIsNullException;
 import com.noxus.exception.ResourceNotFoundException;
 import static com.noxus.mapper.ObjectMapper.parseListObjects;
 import static com.noxus.mapper.ObjectMapper.parseObject;
@@ -28,23 +29,26 @@ public class PersonServices {
     public List<PersonDTO> findAll() {
         logger.info("Finding all People!");
 
-        var people = parseListObjects(repository.findAll(), PersonDTO.class);
-        people.forEach(this::addHateoasLinks);
-        return people;
+        var persons = parseListObjects(repository.findAll(), PersonDTO.class);
+        persons.forEach(this::addHateoasLinks);
+        return persons;
     }
 
     public PersonDTO findById(Long id) {
         logger.info("Finding one Person!");
 
         var entity = repository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
-        var dto = parseObject(entity, PersonDTO.class);
+                .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+        var dto =  parseObject(entity, PersonDTO.class);
         addHateoasLinks(dto);
         return dto;
     }
 
     public PersonDTO create(PersonDTO person) {
+        if (person == null) throw new RequiredObjectIsNullException();
+
         logger.info("Creating one Person!");
+
         var entity = parseObject(person, Person.class);
 
         var dto = parseObject(repository.save(entity), PersonDTO.class);
@@ -53,7 +57,10 @@ public class PersonServices {
     }
 
     public PersonDTO update(PersonDTO person) {
+        if (person == null) throw new RequiredObjectIsNullException();
+
         logger.info("Updating one Person!");
+
         Person entity = repository.findById(person.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
 

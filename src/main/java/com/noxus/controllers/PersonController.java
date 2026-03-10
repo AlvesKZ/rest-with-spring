@@ -1,7 +1,7 @@
 package com.noxus.controllers;
 
 import com.noxus.data.dto.PersonDTO;
-import com.noxus.services.PersonService;
+import com.noxus.services.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +14,13 @@ import java.util.List;
 public class PersonController {
 
     @Autowired
-    private PersonService service;
+    private PersonServices service;
 
     @GetMapping(
             produces = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE
+                MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE
             }
     )
     public List<PersonDTO> findAll() {
@@ -39,12 +39,11 @@ public class PersonController {
     }
 
     @PostMapping(
-            produces = {
+            consumes = {
                     MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE
-            },
-            consumes = {
+                    MediaType.APPLICATION_YAML_VALUE},
+            produces = {
                     MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_YAML_VALUE
@@ -55,20 +54,19 @@ public class PersonController {
     }
 
     @PutMapping(
-            value = "/{id}",
-            produces = {
+            consumes = {
                     MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_YAML_VALUE
             },
-            consumes = {
+            produces = {
                     MediaType.APPLICATION_JSON_VALUE,
                     MediaType.APPLICATION_XML_VALUE,
                     MediaType.APPLICATION_YAML_VALUE
             }
     )
     public PersonDTO update(@RequestBody PersonDTO person) {
-        return service.create(person);
+        return service.update(person);
     }
 
     @DeleteMapping(value = "/{id}")
@@ -76,5 +74,4 @@ public class PersonController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }

@@ -27,15 +27,15 @@ public class PersonServices {
     PersonRepository repository;
 
     public List<PersonDTO> findAll() {
-        logger.info("Finding all People!");
+        logger.info("Finding all people!");
 
-        var persons = parseListObjects(repository.findAll(), PersonDTO.class);
-        persons.forEach(this::addHateoasLinks);
-        return persons;
+        var people = parseListObjects(repository.findAll(), PersonDTO.class);
+        people.forEach(this::addHateoasLinks);
+        return people;
     }
 
     public PersonDTO findById(Long id) {
-        logger.info("Finding one Person!");
+        logger.info("Finding one person!");
 
         var entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));

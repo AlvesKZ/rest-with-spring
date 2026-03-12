@@ -1,10 +1,11 @@
-package com.noxus.services;
+package com.noxus.unittests.services;
 
 import com.noxus.data.dto.BookDTO;
 import com.noxus.exception.RequiredObjectIsNullException;
 import com.noxus.model.Book;
 import com.noxus.repository.BookRepository;
-import com.noxus.unitetests.mapper.mocks.MockBook;
+import com.noxus.services.BookServices;
+import com.noxus.unittests.mapper.mocks.MockBook;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

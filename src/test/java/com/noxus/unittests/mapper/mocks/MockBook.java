@@ -1,4 +1,4 @@
-package com.noxus.unitetests.mapper.mocks;
+package com.noxus.unittests.mapper.mocks;
 
 import com.noxus.data.dto.BookDTO;
 import com.noxus.model.Book;

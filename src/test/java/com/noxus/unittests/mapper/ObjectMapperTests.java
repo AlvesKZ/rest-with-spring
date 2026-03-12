@@ -1,4 +1,4 @@
-package com.noxus.unitetests.mapper;
+package com.noxus.unittests.mapper;
 import static com.noxus.mapper.ObjectMapper.parseListObjects;
 import static com.noxus.mapper.ObjectMapper.parseObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import com.noxus.data.dto.PersonDTO;
-import com.noxus.unitetests.mapper.mocks.MockPerson;
+import com.noxus.unittests.mapper.mocks.MockPerson;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

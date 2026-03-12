@@ -1,10 +1,11 @@
-package com.noxus.services;
+package com.noxus.unittests.services;
 
 import com.noxus.data.dto.PersonDTO;
 import com.noxus.exception.RequiredObjectIsNullException;
 import com.noxus.model.Person;
 import com.noxus.repository.PersonRepository;
-import com.noxus.unitetests.mapper.mocks.MockPerson;
+import com.noxus.services.PersonServices;
+import com.noxus.unittests.mapper.mocks.MockPerson;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

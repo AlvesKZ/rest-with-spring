@@ -1,12 +1,12 @@
-# 🚧 REST with Spring Boot — Em Construção
+# REST with Spring Boot — Em Construção
 
-> ⚠️ **Este projeto está ativamente em desenvolvimento.** Funcionalidades podem ser adicionadas, alteradas ou removidas a qualquer momento.
+> **⚠️Este projeto está ativamente em desenvolvimento.** Funcionalidades podem ser adicionadas, alteradas ou removidas a qualquer momento.
 
 API RESTful desenvolvida com **Spring Boot 3**, aplicando boas práticas de desenvolvimento como content negotiation, HATEOAS, versionamento de banco de dados com Flyway e documentação automática com Swagger/OpenAPI.
 
 ---
 
-## 🛠️ Tecnologias
+## Tecnologias
 
 | Tecnologia | Versão |
 |---|---|
@@ -22,7 +22,7 @@ API RESTful desenvolvida com **Spring Boot 3**, aplicando boas práticas de dese
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 src/main/java/com/noxus/
@@ -67,7 +67,7 @@ src/main/resources/
 
 ---
 
-## ✅ Funcionalidades Implementadas
+## Funcionalidades Implementadas
 
 - CRUD completo para **Person** e **Book**
 - **Content Negotiation** via header `Accept` — suporte a JSON, XML e YAML
@@ -80,7 +80,7 @@ src/main/resources/
 
 ---
 
-## 🔗 Endpoints
+## Endpoints
 
 ### Person — `/api/person/v1`
 
@@ -104,7 +104,7 @@ src/main/resources/
 
 ---
 
-## ⚙️ Configuração
+## Configuração
 
 ### Pré-requisitos
 
@@ -134,7 +134,7 @@ As tabelas são criadas e populadas automaticamente pelo **Flyway** na primeira 
 
 ---
 
-## ▶️ Como Executar
+## Como Executar
 
 ```bash
 # Clonar o repositório

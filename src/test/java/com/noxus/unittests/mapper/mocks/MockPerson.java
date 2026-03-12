@@ -1,4 +1,4 @@
-package com.noxus.unitetests.mapper.mocks;
+package com.noxus.unittests.mapper.mocks;
 
 import java.util.ArrayList;
 import java.util.List;

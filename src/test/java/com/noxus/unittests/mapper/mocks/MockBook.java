@@ -1,11 +1,11 @@
 package com.noxus.unittests.mapper.mocks;
 
-import com.noxus.data.dto.BookDTO;
-import com.noxus.model.Book;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.noxus.data.dto.BookDTO;
+import com.noxus.model.Book;
 
 public class MockBook {
 

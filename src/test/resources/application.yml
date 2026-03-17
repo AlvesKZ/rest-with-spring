@@ -4,7 +4,7 @@ cors:
   originPatterns: http://localhost:8080,http://localhost:3000,https://www.erudio.com.br
 spring:
   application:
-    name: rest-with-spring
+    name: rest-with-spring-boot-and-java-erudio
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
@@ -17,7 +17,8 @@ spring:
 logging:
   level:
     root: INFO
-    # com.noxus: DEBUG
+    # root: WARN
+    # br.com.erudio: DEBUG
 spring-doc:
   paths-to-match: /api/**/v1/**
   swagger-ui:

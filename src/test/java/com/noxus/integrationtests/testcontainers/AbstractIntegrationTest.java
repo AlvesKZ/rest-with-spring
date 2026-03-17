@@ -6,7 +6,6 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.lifecycle.Startable;
 import org.testcontainers.lifecycle.Startables;
 
 import java.util.Map;
@@ -20,7 +19,7 @@ public class AbstractIntegrationTest {
         static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:9.1.0");
 
         private static void startContainers() {
-            Startables.deepStart(Stream.<Startable>of(mysql)).join();
+            Startables.deepStart(Stream.of(mysql)).join();
         }
 
         private static Map<String, String> createConnectionConfiguration() {

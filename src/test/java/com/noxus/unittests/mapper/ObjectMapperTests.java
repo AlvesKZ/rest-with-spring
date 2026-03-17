@@ -1,4 +1,5 @@
 package com.noxus.unittests.mapper;
+
 import static com.noxus.mapper.ObjectMapper.parseListObjects;
 import static com.noxus.mapper.ObjectMapper.parseObject;
 import static org.junit.jupiter.api.Assertions.assertEquals;

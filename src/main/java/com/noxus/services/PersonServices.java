@@ -4,10 +4,10 @@ import com.noxus.controllers.PersonController;
 import com.noxus.data.dto.PersonDTO;
 import com.noxus.exception.RequiredObjectIsNullException;
 import com.noxus.exception.ResourceNotFoundException;
+
 import static com.noxus.mapper.ObjectMapper.parseObject;
 import com.noxus.model.Person;
 import com.noxus.repository.PersonRepository;
-
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +38,27 @@ public class PersonServices {
         logger.info("Finding all people!");
 
         var people = repository.findAll(pageable);
+
+        var peopleWithLinks = people.map(person -> {
+            var dto = parseObject(person, PersonDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+        Link findAllLink = WebMvcLinkBuilder.linkTo(
+                WebMvcLinkBuilder.methodOn(PersonController.class)
+                    .findAll(
+                        pageable.getPageNumber(),
+                        pageable.getPageSize(),
+                        String.valueOf(pageable.getSort())))
+            .withSelfRel();
+        return assembler.toModel(peopleWithLinks, findAllLink);
+    }
+
+    public PagedModel<EntityModel<PersonDTO>> findByName(String firstName, Pageable pageable) {
+        logger.info("Finding people by name!");
+
+        var people = repository.findPeopleByName(firstName, pageable);
 
         var peopleWithLinks = people.map(person -> {
             var dto = parseObject(person, PersonDTO.class);

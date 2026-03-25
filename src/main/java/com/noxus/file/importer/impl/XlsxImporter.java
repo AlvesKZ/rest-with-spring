@@ -2,17 +2,18 @@ package com.noxus.file.importer.impl;
 
 import com.noxus.data.dto.PersonDTO;
 import com.noxus.file.importer.contract.FileImporter;
-import org.apache.commons.csv.CSVRecord;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+@Component
 public class XlsxImporter implements FileImporter {
 
     @Override

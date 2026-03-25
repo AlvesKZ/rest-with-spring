@@ -1,6 +1,7 @@
 package com.noxus.file.exporter.factory;
 
 import com.noxus.exception.BadRequestException;
+import com.noxus.file.exporter.MediaTypes;
 import com.noxus.file.exporter.contract.FileExporter;
 import com.noxus.file.exporter.impl.CsvExporter;
 import com.noxus.file.exporter.impl.XlsxExporter;
@@ -18,10 +19,10 @@ public class FileExporterFactory {
     @Autowired
     private ApplicationContext context;
 
-    public FileExporter getExporter(String fileName) throws Exception {
-        if (fileName.endsWith(".xlsx")) {
+    public FileExporter getExporter(String acceptHeader) throws Exception {
+        if (acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_XLSX_VALUE)) {
             return context.getBean(XlsxExporter.class);
-        } else if (fileName.endsWith(".csv")) {
+        } else if (acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_CSV_VALUE)) {
             return context.getBean(CsvExporter.class);
         } else {
             throw new BadRequestException("Invalid file format");

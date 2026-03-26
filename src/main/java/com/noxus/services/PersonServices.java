@@ -199,6 +199,6 @@ public class PersonServices {
         dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
         dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
         dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
-        dto.add(linkTo(methodOn(PersonController.class).exportPage(0, 12, "asc", MediaTypes.APPLICATION_XLSX_VALUE)).withRel("exportPage").withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).exportPage(0, 12, "asc", null)).withRel("exportPage").withType("GET"));
     }
 }

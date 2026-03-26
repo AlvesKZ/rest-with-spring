@@ -1,8 +1,6 @@
-# REST with Spring Boot — Em Construção
+# REST with Spring Boot
 
-> **⚠️ Este projeto está ativamente em desenvolvimento.** Funcionalidades podem ser adicionadas, alteradas ou removidas a qualquer momento.
-
-API RESTful desenvolvida com **Spring Boot 3**, aplicando boas práticas de desenvolvimento como content negotiation, HATEOAS, paginação com ordenação, busca por nome, desativação de registros via PATCH, testes de integração com Testcontainers e documentação automática com Swagger/OpenAPI.
+API RESTful desenvolvida com **Spring Boot 3**, aplicando boas práticas de desenvolvimento como content negotiation, HATEOAS, paginação com ordenação, busca por nome, importação e exportação de arquivos CSV/XLSX, upload e download de arquivos, desativação de registros via PATCH, testes de integração com Testcontainers e documentação automática com Swagger/OpenAPI.
 
 ---
 
@@ -19,6 +17,8 @@ API RESTful desenvolvida com **Spring Boot 3**, aplicando boas práticas de dese
 | SpringDoc OpenAPI (Swagger) | 2.7.0 |
 | Dozer Mapper | 7.0.0 |
 | Jackson (JSON / XML / YAML) | — |
+| Apache Commons CSV | — |
+| Apache POI (XLSX) | — |
 | Testcontainers | 1.20.4 |
 | REST Assured | — |
 
@@ -34,11 +34,27 @@ src/main/java/com/noxus/
 ├── controllers/
 │   ├── PersonController.java       # Endpoints de Person
 │   ├── BookController.java         # Endpoints de Book
+│   ├── FileController.java         # Upload e download de arquivos
 │   ├── TestLogController.java      # Endpoint de teste de logs (SLF4J)
 │   └── docs/                       # Interfaces com anotações OpenAPI
 ├── services/
 │   ├── PersonServices.java
-│   └── BookServices.java
+│   ├── BookServices.java
+│   └── FileStorageServices.java
+├── file/
+│   ├── exporter/
+│   │   ├── MediaTypes.java         # Constantes de media type (XLSX, CSV)
+│   │   ├── contract/FileExporter.java
+│   │   ├── factory/FileExporterFactory.java
+│   │   └── impl/
+│   │       ├── CsvExporter.java
+│   │       └── XlsxExporter.java
+│   └── importer/
+│       ├── contract/FileImporter.java
+│       ├── factory/FileImporterFactory.java
+│       └── impl/
+│           ├── CsvImporter.java
+│           └── XlsxImporter.java
 ├── repository/
 │   ├── PersonRepository.java
 │   └── BookRepository.java
@@ -47,7 +63,8 @@ src/main/java/com/noxus/
 │   └── Book.java
 ├── data/dto/
 │   ├── PersonDTO.java
-│   └── BookDTO.java
+│   ├── BookDTO.java
+│   └── UploadFileResponseDTO.java
 ├── mapper/
 │   └── ObjectMapper.java           # Mapeamento entre entidades e DTOs
 ├── serialization/converter/
@@ -55,6 +72,9 @@ src/main/java/com/noxus/
 ├── exception/
 │   ├── handler/CustomEntityResponseHandler.java
 │   ├── ExceptionResponse.java
+│   ├── BadRequestException.java
+│   ├── FileNotFoundException.java
+│   ├── FileStorageException.java
 │   ├── ResourceNotFoundException.java
 │   └── RequiredObjectIsNullException.java
 └── Startup.java
@@ -66,8 +86,8 @@ src/main/resources/
     ├── V2__Populate_Table_Person.sql
     ├── V3__Create_Table_Books.sql
     ├── V4__Insert_Data_In_Books.sql
-    ├── V5__Alter_Table_Person.sql  # Adiciona coluna enabled
-    └── V6__Populate_Person_With_Many.sql  # Popula tabela com 1000+ registros
+    ├── V5__Alter_Table_Person.sql        # Adiciona coluna enabled
+    └── V6__Populate_Person_With_Many.sql # Popula tabela com 1000+ registros
 
 src/test/java/com/noxus/
 ├── config/
@@ -107,12 +127,15 @@ src/test/java/com/noxus/
 
 ---
 
-## Funcionalidades Implementadas
+## Funcionalidades
 
 - CRUD completo para **Person** e **Book**
 - **Paginação e ordenação** — todos os endpoints de listagem aceitam `page`, `size` e `direction`
 - **Busca por nome** — `/api/person/v1/findPeopleByName/{firstName}` com paginação
 - **Desativação de Person** — `PATCH /api/person/v1/{id}` alterna o campo `enabled` sem excluir o registro
+- **Importação em massa** — `POST /api/person/v1/massCreation` aceita arquivos `.csv` ou `.xlsx` e persiste os registros
+- **Exportação paginada** — `GET /api/person/v1/exportPage` retorna `.csv` ou `.xlsx` conforme o header `Accept`
+- **Upload e download de arquivos** — armazenamento local via `FileStorageServices`
 - **Content Negotiation** via header `Accept` — suporte a JSON, XML e YAML
 - **HATEOAS** — respostas com hypermedia links e `PagedModel`
 - **Documentação automática** com Swagger UI (SpringDoc OpenAPI)
@@ -135,7 +158,9 @@ src/test/java/com/noxus/
 | `GET` | `/api/person/v1` | Lista pessoas com paginação (`page`, `size`, `direction`) |
 | `GET` | `/api/person/v1/{id}` | Busca pessoa por ID |
 | `GET` | `/api/person/v1/findPeopleByName/{firstName}` | Busca pessoas por nome com paginação |
+| `GET` | `/api/person/v1/exportPage` | Exporta página de pessoas em `.xlsx` ou `.csv` (via header `Accept`) |
 | `POST` | `/api/person/v1` | Cria uma nova pessoa |
+| `POST` | `/api/person/v1/massCreation` | Importa pessoas a partir de arquivo `.csv` ou `.xlsx` |
 | `PUT` | `/api/person/v1` | Atualiza uma pessoa |
 | `PATCH` | `/api/person/v1/{id}` | Ativa ou desativa uma pessoa (campo `enabled`) |
 | `DELETE` | `/api/person/v1/{id}` | Remove uma pessoa |
@@ -149,6 +174,14 @@ src/test/java/com/noxus/
 | `POST` | `/api/book/v1` | Cria um novo livro |
 | `PUT` | `/api/book/v1` | Atualiza um livro |
 | `DELETE` | `/api/book/v1/{id}` | Remove um livro |
+
+### Arquivos — `/api/file/v1`
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `POST` | `/api/file/v1/uploadFile` | Faz upload de um único arquivo |
+| `POST` | `/api/file/v1/uploadMultipleFiles` | Faz upload de múltiplos arquivos |
+| `GET` | `/api/file/v1/downloadFile/{fileName}` | Faz download de um arquivo pelo nome |
 
 ### Utilitário — `/api/test/v1`
 
@@ -220,25 +253,6 @@ mvn test
 ```
 
 > Os testes de integração sobem um container MySQL automaticamente via **Testcontainers**. É necessário ter o Docker rodando.
-
----
-
-## Roadmap
-
-- [x] CRUD de Person
-- [x] CRUD de Book
-- [x] Content Negotiation (JSON, XML, YAML)
-- [x] HATEOAS com `PagedModel`
-- [x] Paginação e ordenação
-- [x] Busca por nome com paginação
-- [x] Desativação de Person via PATCH
-- [x] Swagger / OpenAPI
-- [x] Flyway migrations
-- [x] Testes unitários
-- [x] Testes de integração com Testcontainers + REST Assured
-- [x] Testes de CORS
-- [ ] Autenticação e autorização (JWT)
-- [ ] Dockerização
 
 ---
 

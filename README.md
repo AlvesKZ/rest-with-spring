@@ -1,6 +1,6 @@
 # REST with Spring Boot
 
-API RESTful desenvolvida com **Spring Boot 3**, aplicando boas práticas de desenvolvimento como content negotiation, HATEOAS, paginação com ordenação, busca por nome, importação e exportação de arquivos CSV/XLSX, upload e download de arquivos, desativação de registros via PATCH, testes de integração com Testcontainers e documentação automática com Swagger/OpenAPI.
+API RESTful desenvolvida com **Spring Boot 3**, aplicando boas práticas de desenvolvimento como content negotiation, HATEOAS, paginação com ordenação, busca por nome, importação e exportação de arquivos CSV/XLSX, upload e download de arquivos, testes de integração com Testcontainers e documentação automática com Swagger/OpenAPI.
 
 ---
 

@@ -31,7 +31,8 @@ public class Book implements Serializable {
     @Column(nullable = false, length = 250)
     private String title;
 
-    public Book() {}
+    public Book() {
+    }
 
     public Long getId() {
         return id;

@@ -12,9 +12,14 @@ public class UploadFileResponseDTO implements Serializable {
     private String fileName;
     private String fileDownloadUri;
     private String fileType;
-    private Long size;
+    private long size;
 
-    public UploadFileResponseDTO(String fileName, String fileDownloadUri, String fileType, Long size) {
+    public UploadFileResponseDTO() {
+    }
+
+    public UploadFileResponseDTO(
+        String fileName, String fileDownloadUri,
+        String fileType, long size) {
         this.fileName = fileName;
         this.fileDownloadUri = fileDownloadUri;
         this.fileType = fileType;
@@ -45,22 +50,23 @@ public class UploadFileResponseDTO implements Serializable {
         this.fileType = fileType;
     }
 
-    public Long getSize() {
+    public long getSize() {
         return size;
     }
 
-    public void setSize(Long size) {
+    public void setSize(long size) {
         this.size = size;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof UploadFileResponseDTO that)) return false;
-        return Objects.equals(fileName, that.fileName) && Objects.equals(fileDownloadUri, that.fileDownloadUri) && Objects.equals(fileType, that.fileType) && Objects.equals(size, that.size);
+        if (o == null || getClass() != o.getClass()) return false;
+        UploadFileResponseDTO that = (UploadFileResponseDTO) o;
+        return getSize() == that.getSize() && Objects.equals(getFileName(), that.getFileName()) && Objects.equals(getFileDownloadUri(), that.getFileDownloadUri()) && Objects.equals(getFileType(), that.getFileType());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fileName, fileDownloadUri, fileType, size);
+        return Objects.hash(getFileName(), getFileDownloadUri(), getFileType(), getSize());
     }
 }

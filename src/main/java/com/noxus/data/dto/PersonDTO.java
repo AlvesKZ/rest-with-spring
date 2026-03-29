@@ -29,7 +29,8 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
     @JsonIgnore
     private List<Book> books;
 
-    public PersonDTO() {}
+    public PersonDTO() {
+    }
 
     public Long getId() {
         return id;
@@ -80,7 +81,7 @@ public class PersonDTO extends RepresentationModel<PersonDTO> implements Seriali
     }
 
     @JsonIgnore
-    public String getName(){
+    public String getName() {
         return (firstName != null ? firstName : "") +
             (lastName != null ? " " + lastName : "");
     }

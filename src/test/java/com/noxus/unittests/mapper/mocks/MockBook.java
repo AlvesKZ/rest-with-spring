@@ -13,11 +13,11 @@ public class MockBook {
     public Book mockEntity() {
         return mockEntity(0);
     }
-
+    
     public BookDTO mockDTO() {
         return mockDTO(0);
     }
-
+    
     public List<Book> mockEntityList() {
         List<Book> books = new ArrayList<Book>();
         for (int i = 0; i < 14; i++) {
@@ -33,7 +33,7 @@ public class MockBook {
         }
         return books;
     }
-
+    
     public Book mockEntity(Integer number) {
         Book book = new Book();
         book.setId(number.longValue());

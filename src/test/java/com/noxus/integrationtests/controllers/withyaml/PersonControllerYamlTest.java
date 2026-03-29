@@ -48,8 +48,8 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
             .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
             .setBasePath("/api/person/v1")
             .setPort(TestConfigs.SERVER_PORT)
-            .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-            .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
             .build();
 
         var createdPerson = given().config(
@@ -57,18 +57,18 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
                     .encoderConfig(
                         EncoderConfig.encoderConfig().
                             encodeContentTypeAs(MediaType.APPLICATION_YAML_VALUE, ContentType.TEXT))
-            ).spec(specification)
+                ).spec(specification)
             .contentType(MediaType.APPLICATION_YAML_VALUE)
             .accept(MediaType.APPLICATION_YAML_VALUE)
-            .body(person, objectMapper)
+                .body(person, objectMapper)
             .when()
-            .post()
+                .post()
             .then()
-            .statusCode(200)
-            .contentType(MediaType.APPLICATION_YAML_VALUE)
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
             .extract()
-            .body()
-            .as(PersonDTO.class, objectMapper);
+                .body()
+                    .as(PersonDTO.class, objectMapper);
 
         person = createdPerson;
 
@@ -82,29 +82,29 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
         assertTrue(createdPerson.getEnabled());
 
     }
-
+    
     @Test
     @Order(2)
     void updateTest() throws JsonProcessingException {
         person.setLastName("Benedict Torvalds");
 
         var createdPerson = given().config(
-                RestAssuredConfig.config()
-                    .encoderConfig(
-                        EncoderConfig.encoderConfig().
-                            encodeContentTypeAs(MediaType.APPLICATION_YAML_VALUE, ContentType.TEXT))
-            ).spec(specification)
+                        RestAssuredConfig.config()
+                                .encoderConfig(
+                                        EncoderConfig.encoderConfig().
+                                                encodeContentTypeAs(MediaType.APPLICATION_YAML_VALUE, ContentType.TEXT))
+                ).spec(specification)
             .contentType(MediaType.APPLICATION_YAML_VALUE)
             .accept(MediaType.APPLICATION_YAML_VALUE)
-            .body(person, objectMapper)
+                .body(person, objectMapper)
             .when()
-            .put()
+                .put()
             .then()
-            .statusCode(200)
-            .contentType(MediaType.APPLICATION_YAML_VALUE)
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
             .extract()
-            .body()
-            .as(PersonDTO.class, objectMapper);
+                .body()
+                .as(PersonDTO.class, objectMapper);
 
         person = createdPerson;
 
@@ -124,22 +124,22 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
     void findByIdTest() throws JsonProcessingException {
 
         var createdPerson = given().config(
-                RestAssuredConfig.config()
-                    .encoderConfig(
-                        EncoderConfig.encoderConfig().
-                            encodeContentTypeAs(MediaType.APPLICATION_YAML_VALUE, ContentType.TEXT))
-            ).spec(specification)
-            .contentType(MediaType.APPLICATION_YAML_VALUE)
-            .accept(MediaType.APPLICATION_YAML_VALUE)
-            .pathParam("id", person.getId())
-            .when()
-            .get("{id}")
-            .then()
-            .statusCode(200)
-            .contentType(MediaType.APPLICATION_YAML_VALUE)
-            .extract()
-            .body()
-            .as(PersonDTO.class, objectMapper);
+                        RestAssuredConfig.config()
+                                .encoderConfig(
+                                        EncoderConfig.encoderConfig().
+                                                encodeContentTypeAs(MediaType.APPLICATION_YAML_VALUE, ContentType.TEXT))
+                ).spec(specification)
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
+                .accept(MediaType.APPLICATION_YAML_VALUE)
+                    .pathParam("id", person.getId())
+                .when()
+                    .get("{id}")
+                .then()
+                    .statusCode(200)
+                    .contentType(MediaType.APPLICATION_YAML_VALUE)
+                .extract()
+                    .body()
+                .as(PersonDTO.class, objectMapper);
 
         person = createdPerson;
 
@@ -158,21 +158,21 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
     void disableTest() throws JsonProcessingException {
 
         var createdPerson = given().config(
-                RestAssuredConfig.config()
-                    .encoderConfig(
-                        EncoderConfig.encoderConfig().
-                            encodeContentTypeAs(MediaType.APPLICATION_YAML_VALUE, ContentType.TEXT))
-            ).spec(specification)
-            .accept(MediaType.APPLICATION_YAML_VALUE)
-            .pathParam("id", person.getId())
-            .when()
-            .patch("{id}")
-            .then()
-            .statusCode(200)
-            .contentType(MediaType.APPLICATION_YAML_VALUE)
-            .extract()
-            .body()
-            .as(PersonDTO.class, objectMapper);
+                        RestAssuredConfig.config()
+                                .encoderConfig(
+                                        EncoderConfig.encoderConfig().
+                                                encodeContentTypeAs(MediaType.APPLICATION_YAML_VALUE, ContentType.TEXT))
+                ).spec(specification)
+                .accept(MediaType.APPLICATION_YAML_VALUE)
+                    .pathParam("id", person.getId())
+                .when()
+                    .patch("{id}")
+                .then()
+                    .statusCode(200)
+                    .contentType(MediaType.APPLICATION_YAML_VALUE)
+                .extract()
+                    .body()
+                .as(PersonDTO.class, objectMapper);
 
         person = createdPerson;
 
@@ -191,11 +191,11 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
     void deleteTest() throws JsonProcessingException {
 
         given(specification)
-            .pathParam("id", person.getId())
+                .pathParam("id", person.getId())
             .when()
-            .delete("{id}")
+                .delete("{id}")
             .then()
-            .statusCode(204);
+                .statusCode(204);
     }
 
 
@@ -204,16 +204,16 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
     void findAllTest() throws JsonProcessingException {
 
         var response = given(specification)
-            .accept(MediaType.APPLICATION_YAML_VALUE)
-            .queryParams("page", 3, "size", 12, "direction", "asc")
-            .when()
-            .get()
-            .then()
-            .statusCode(200)
-            .contentType(MediaType.APPLICATION_YAML_VALUE)
-            .extract()
-            .body()
-            .as(PagedModelPerson.class, objectMapper);
+                .accept(MediaType.APPLICATION_YAML_VALUE)
+                .queryParams("page", 3, "size", 12, "direction", "asc")
+                .when()
+                .get()
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
+                .extract()
+                .body()
+                .as(PagedModelPerson.class, objectMapper);
 
         List<PersonDTO> people = response.getContent();
 
@@ -245,17 +245,17 @@ class PersonControllerYamlTest extends AbstractIntegrationTest {
     void findByNameTestTest() throws JsonProcessingException {
 
         var response = given(specification)
-            .accept(MediaType.APPLICATION_YAML_VALUE)
-            .pathParam("firstName", "and")
-            .queryParams("page", 0, "size", 12, "direction", "asc")
-            .when()
-            .get("findPeopleByName/{firstName}")
-            .then()
-            .statusCode(200)
-            .contentType(MediaType.APPLICATION_YAML_VALUE)
-            .extract()
-            .body()
-            .as(PagedModelPerson.class, objectMapper);
+                .accept(MediaType.APPLICATION_YAML_VALUE)
+                .pathParam("firstName", "and")
+                .queryParams("page", 0, "size", 12, "direction", "asc")
+                .when()
+                .get("findPeopleByName/{firstName}")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_YAML_VALUE)
+                .extract()
+                .body()
+                .as(PagedModelPerson.class, objectMapper);
 
         List<PersonDTO> people = response.getContent();
 

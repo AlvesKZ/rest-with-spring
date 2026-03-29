@@ -15,14 +15,14 @@ class SwaggerIntegrationTest extends AbstractIntegrationTest {
 	void shouldDisplaySwaggerUIPage() {
 		var content = given()
 			.basePath("/swagger-ui/index.html")
-			.port(TestConfigs.SERVER_PORT)
+				.port(TestConfigs.SERVER_PORT)
 			.when()
-			.get()
+				.get()
 			.then()
-			.statusCode(200)
+				.statusCode(200)
 			.extract()
-			.body()
-			.asString();
+				.body()
+					.asString();
 		assertTrue(content.contains("Swagger UI"));
 	}
 

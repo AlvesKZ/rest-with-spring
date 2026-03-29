@@ -2,7 +2,7 @@ package com.noxus.file.exporter.factory;
 
 import com.noxus.exception.BadRequestException;
 import com.noxus.file.exporter.MediaTypes;
-import com.noxus.file.exporter.contract.FileExporter;
+import com.noxus.file.exporter.contract.PersonExporter;
 import com.noxus.file.exporter.impl.CsvExporter;
 import com.noxus.file.exporter.impl.PdfExporter;
 import com.noxus.file.exporter.impl.XlsxExporter;
@@ -20,7 +20,7 @@ public class FileExporterFactory {
     @Autowired
     private ApplicationContext context;
 
-    public FileExporter getExporter(String acceptHeader) throws Exception {
+    public PersonExporter getExporter(String acceptHeader) throws Exception {
         if (acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_XLSX_VALUE)) {
             return context.getBean(XlsxExporter.class);
         } else if (acceptHeader.equalsIgnoreCase(MediaTypes.APPLICATION_CSV_VALUE)) {

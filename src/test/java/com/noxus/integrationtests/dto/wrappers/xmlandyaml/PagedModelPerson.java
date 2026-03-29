@@ -15,8 +15,7 @@ public class PagedModelPerson implements Serializable {
     @XmlElement(name = "content")
     public List<PersonDTO> content;
 
-    public PagedModelPerson() {
-    }
+    public PagedModelPerson() {}
 
     public List<PersonDTO> getContent() {
         return content;

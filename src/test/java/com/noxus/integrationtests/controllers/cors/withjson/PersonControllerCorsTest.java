@@ -45,20 +45,20 @@ class PersonControllerCorsTest extends AbstractIntegrationTest {
             .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
             .setBasePath("/api/person/v1")
             .setPort(TestConfigs.SERVER_PORT)
-            .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-            .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
             .build();
 
         var content = given(specification)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(person)
+                .body(person)
             .when()
-            .post()
+                .post()
             .then()
-            .statusCode(200)
+                .statusCode(200)
             .extract()
-            .body()
-            .asString();
+                .body()
+                    .asString();
 
         PersonDTO createdPerson = objectMapper.readValue(content, PersonDTO.class);
         person = createdPerson;
@@ -87,20 +87,20 @@ class PersonControllerCorsTest extends AbstractIntegrationTest {
             .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
             .setBasePath("/api/person/v1")
             .setPort(TestConfigs.SERVER_PORT)
-            .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-            .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
             .build();
 
         var content = given(specification)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(person)
+                .body(person)
             .when()
-            .post()
+                .post()
             .then()
-            .statusCode(403)
+                .statusCode(403)
             .extract()
-            .body()
-            .asString();
+                .body()
+                    .asString();
 
         assertEquals("Invalid CORS request", content);
 
@@ -110,23 +110,23 @@ class PersonControllerCorsTest extends AbstractIntegrationTest {
     @Order(3)
     void findById() throws JsonProcessingException {
         specification = new RequestSpecBuilder()
-            .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LOCAL)
-            .setBasePath("/api/person/v1")
-            .setPort(TestConfigs.SERVER_PORT)
-            .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-            .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-            .build();
+                .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_LOCAL)
+                .setBasePath("/api/person/v1")
+                .setPort(TestConfigs.SERVER_PORT)
+                    .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                    .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .build();
 
         var content = given(specification)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .pathParam("id", person.getId())
-            .when()
-            .get("{id}")
-            .then()
-            .statusCode(200)
-            .extract()
-            .body()
-            .asString();
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .pathParam("id", person.getId())
+                .when()
+                    .get("{id}")
+                .then()
+                    .statusCode(200)
+                .extract()
+                    .body()
+                        .asString();
 
         PersonDTO createdPerson = objectMapper.readValue(content, PersonDTO.class);
         person = createdPerson;
@@ -145,28 +145,27 @@ class PersonControllerCorsTest extends AbstractIntegrationTest {
         assertEquals("Male", createdPerson.getGender());
         assertTrue(createdPerson.getEnabled());
     }
-
     @Test
     @Order(4)
     void findByIdWithWrongOrigin() throws JsonProcessingException {
         specification = new RequestSpecBuilder()
-            .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
-            .setBasePath("/api/person/v1")
-            .setPort(TestConfigs.SERVER_PORT)
-            .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-            .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
-            .build();
+                .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_SEMERU)
+                .setBasePath("/api/person/v1")
+                .setPort(TestConfigs.SERVER_PORT)
+                    .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                    .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .build();
 
         var content = given(specification)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .pathParam("id", person.getId())
-            .when()
-            .get("{id}")
-            .then()
-            .statusCode(403)
-            .extract()
-            .body()
-            .asString();
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .pathParam("id", person.getId())
+                .when()
+                    .get("{id}")
+                .then()
+                    .statusCode(403)
+                .extract()
+                    .body()
+                        .asString();
 
         assertEquals("Invalid CORS request", content);
     }

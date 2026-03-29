@@ -48,22 +48,22 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
             .addHeader(TestConfigs.HEADER_PARAM_ORIGIN, TestConfigs.ORIGIN_ERUDIO)
             .setBasePath("/api/person/v1")
             .setPort(TestConfigs.SERVER_PORT)
-            .addFilter(new RequestLoggingFilter(LogDetail.ALL))
-            .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
+                .addFilter(new RequestLoggingFilter(LogDetail.ALL))
+                .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
             .build();
 
         var content = given(specification)
             .contentType(MediaType.APPLICATION_XML_VALUE)
             .accept(MediaType.APPLICATION_XML_VALUE)
-            .body(person)
+                .body(person)
             .when()
-            .post()
+                .post()
             .then()
-            .statusCode(200)
-            .contentType(MediaType.APPLICATION_XML_VALUE)
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
             .extract()
-            .body()
-            .asString();
+                .body()
+                    .asString();
 
         PersonDTO createdPerson = objectMapper.readValue(content, PersonDTO.class);
         person = createdPerson;
@@ -78,7 +78,7 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
         assertTrue(createdPerson.getEnabled());
 
     }
-
+    
     @Test
     @Order(2)
     void updateTest() throws JsonProcessingException {
@@ -87,15 +87,15 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
         var content = given(specification)
             .contentType(MediaType.APPLICATION_XML_VALUE)
             .accept(MediaType.APPLICATION_XML_VALUE)
-            .body(person)
+                .body(person)
             .when()
-            .put()
+                .put()
             .then()
-            .statusCode(200)
-            .contentType(MediaType.APPLICATION_XML_VALUE)
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
             .extract()
-            .body()
-            .asString();
+                .body()
+                    .asString();
 
         PersonDTO createdPerson = objectMapper.readValue(content, PersonDTO.class);
         person = createdPerson;
@@ -116,17 +116,17 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
     void findByIdTest() throws JsonProcessingException {
 
         var content = given(specification)
-            .contentType(MediaType.APPLICATION_XML_VALUE)
-            .accept(MediaType.APPLICATION_XML_VALUE)
-            .pathParam("id", person.getId())
-            .when()
-            .get("{id}")
-            .then()
-            .statusCode(200)
-            .contentType(MediaType.APPLICATION_XML_VALUE)
-            .extract()
-            .body()
-            .asString();
+                .contentType(MediaType.APPLICATION_XML_VALUE)
+                .accept(MediaType.APPLICATION_XML_VALUE)
+                    .pathParam("id", person.getId())
+                .when()
+                    .get("{id}")
+                .then()
+                    .statusCode(200)
+                    .contentType(MediaType.APPLICATION_XML_VALUE)
+                .extract()
+                    .body()
+                        .asString();
 
         PersonDTO createdPerson = objectMapper.readValue(content, PersonDTO.class);
         person = createdPerson;
@@ -146,16 +146,16 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
     void disableTest() throws JsonProcessingException {
 
         var content = given(specification)
-            .accept(MediaType.APPLICATION_XML_VALUE)
-            .pathParam("id", person.getId())
-            .when()
-            .patch("{id}")
-            .then()
-            .statusCode(200)
-            .contentType(MediaType.APPLICATION_XML_VALUE)
-            .extract()
-            .body()
-            .asString();
+                .accept(MediaType.APPLICATION_XML_VALUE)
+                    .pathParam("id", person.getId())
+                .when()
+                    .patch("{id}")
+                .then()
+                    .statusCode(200)
+                    .contentType(MediaType.APPLICATION_XML_VALUE)
+                .extract()
+                    .body()
+                        .asString();
 
         PersonDTO createdPerson = objectMapper.readValue(content, PersonDTO.class);
         person = createdPerson;
@@ -175,11 +175,11 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
     void deleteTest() throws JsonProcessingException {
 
         given(specification)
-            .pathParam("id", person.getId())
+                .pathParam("id", person.getId())
             .when()
-            .delete("{id}")
+                .delete("{id}")
             .then()
-            .statusCode(204);
+                .statusCode(204);
     }
 
 
@@ -188,16 +188,16 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
     void findAllTest() throws JsonProcessingException {
 
         var content = given(specification)
-            .accept(MediaType.APPLICATION_XML_VALUE)
-            .queryParams("page", 3, "size", 12, "direction", "asc")
-            .when()
-            .get()
-            .then()
-            .statusCode(200)
-            .contentType(MediaType.APPLICATION_XML_VALUE)
-            .extract()
-            .body()
-            .asString();
+                .accept(MediaType.APPLICATION_XML_VALUE)
+                .queryParams("page", 3, "size", 12, "direction", "asc")
+                .when()
+                .get()
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
+                .extract()
+                .body()
+                .asString();
 
         PagedModelPerson wrapper = objectMapper.readValue(content, PagedModelPerson.class);
         List<PersonDTO> people = wrapper.getContent();
@@ -230,17 +230,17 @@ class PersonControllerXmlTest extends AbstractIntegrationTest {
     void findByNameTestTest() throws JsonProcessingException {
 
         var content = given(specification)
-            .accept(MediaType.APPLICATION_XML_VALUE)
-            .pathParam("firstName", "and")
-            .queryParams("page", 0, "size", 12, "direction", "asc")
-            .when()
-            .get("findPeopleByName/{firstName}")
-            .then()
-            .statusCode(200)
-            .contentType(MediaType.APPLICATION_XML_VALUE)
-            .extract()
-            .body()
-            .asString();
+                .accept(MediaType.APPLICATION_XML_VALUE)
+                .pathParam("firstName", "and")
+                .queryParams("page", 0, "size", 12, "direction", "asc")
+                .when()
+                .get("findPeopleByName/{firstName}")
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_XML_VALUE)
+                .extract()
+                .body()
+                .asString();
 
         PagedModelPerson wrapper = objectMapper.readValue(content, PagedModelPerson.class);
         List<PersonDTO> people = wrapper.getContent();

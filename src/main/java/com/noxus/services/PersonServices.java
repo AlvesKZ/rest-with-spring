@@ -9,8 +9,7 @@ import com.noxus.exception.ResourceNotFoundException;
 
 import static com.noxus.mapper.ObjectMapper.parseObject;
 
-import com.noxus.file.exporter.MediaTypes;
-import com.noxus.file.exporter.contract.FileExporter;
+import com.noxus.file.exporter.contract.PersonExporter;
 import com.noxus.file.exporter.factory.FileExporterFactory;
 import com.noxus.file.importer.contract.FileImporter;
 import com.noxus.file.importer.factory.FileImporterFactory;
@@ -70,6 +69,21 @@ public class PersonServices {
         return buildPagedModel(pageable, people);
     }
 
+    public Resource exportPerson(Long id, String acceptHeader) {
+        logger.info("Exporting data of one Person!");
+
+        var person = repository.findById(id)
+            .map(entity -> parseObject(entity, PersonDTO.class))
+            .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID!"));
+
+        try {
+            PersonExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exportPerson(person);
+        } catch (Exception e) {
+            throw new RuntimeException("Error during file export!", e);
+        }
+    }
+
     public PersonDTO findById(Long id) {
         logger.info("Finding one person!");
 
@@ -87,8 +101,8 @@ public class PersonServices {
             .getContent();
 
         try {
-            FileExporter exporter = this.exporter.getExporter(acceptHeader);
-            return exporter.exportFile(people);
+            PersonExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exportPeople(people);
         } catch (Exception e) {
             throw new RuntimeException("Error during file export", e);
         }

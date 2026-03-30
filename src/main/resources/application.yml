@@ -28,7 +28,7 @@ spring:
     password: ${EMAIL_PASSWORD}
     properties:
       mail.smtp.auth: true
-      mail.smtp.starttls.enabled: true
+      mail.smtp.starttls.enable: true
       mail.smtp.starttls.required: true
   servlet:
     multipart:

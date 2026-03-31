@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface EmailControllerDocs {
 
     @Operation(summary = "Send an Email",
-        description = "Sends an Email ny providing details, subject, and body",
+        description = "Sends an Email by providing details, subject and body",
         tags = {"Email"},
         responses = {
             @ApiResponse(description = "Success", responseCode = "200", content = @Content),
@@ -22,7 +22,7 @@ public interface EmailControllerDocs {
     ResponseEntity<String> sendEmail(EmailRequestDTO emailRequestDTO);
 
     @Operation(summary = "Send an Email with attachment",
-        description = "Sends an Email ny providing details, subject, and body",
+        description = "Sends an Email by providing details, subject, attachment and body",
         tags = {"Email"},
         responses = {
             @ApiResponse(description = "Success", responseCode = "200", content = @Content),

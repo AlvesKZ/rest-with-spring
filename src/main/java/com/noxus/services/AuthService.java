@@ -3,7 +3,6 @@ package com.noxus.services;
 import com.noxus.data.dto.security.AccountCredentialsDTO;
 import com.noxus.data.dto.security.TokenDTO;
 import com.noxus.exception.RequiredObjectIsNullException;
-import com.noxus.model.Person;
 import com.noxus.model.User;
 import com.noxus.repository.UserRepository;
 import com.noxus.security.jwt.JwtTokenProvider;
@@ -20,8 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static com.noxus.mapper.ObjectMapper.parseObject;
 
 @Service
 public class AuthService {
@@ -71,7 +68,6 @@ public class AuthService {
         if (user == null) throw new RequiredObjectIsNullException();
 
         logger.info("Creating one user");
-
         var entity = new User();
         entity.setFullName(user.getFullname());
         entity.setUserName(user.getUsername());

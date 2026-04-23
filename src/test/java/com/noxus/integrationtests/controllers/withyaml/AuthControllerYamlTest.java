@@ -43,7 +43,7 @@ class AuthControllerYamlTest extends AbstractIntegrationTest {
             .basePath("/auth/signin")
             .port(TestConfigs.SERVER_PORT)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .body(credentials)
+            .body(credentials, objectMapper)
             .when()
             .post()
             .then()
